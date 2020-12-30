@@ -4,21 +4,38 @@ import java.util.Set;
 
 public class Customer {
     private String name;
+    private String password;
+    private TrueCustomerCredentials trueCustomerCredentials;
+    private DebitCard debitCard;
     private LocalDate dOb;
     private boolean canadian;
     private int creditScore;
     private int amountSpentLastMonth;
     private boolean consentToProvideFamilyMemberDetails;
-    private Set<FamilyMember> familyMembers;
+    private Set<FamilyMember> familyMembers = new HashSet<>();
 
-    public Customer(String name, LocalDate dOB, boolean canadian, int creditScore, int amountSpentLastMonth, boolean consentToProvideFamilyMemberDetails){
+    public Customer(String name, String password, LocalDate dOb, boolean consentToProvideFamilyMemberDetails) {
         this.name = name;
-        this.dOb = dOB;
-        this.canadian = canadian;
+        this.password = password;
+        this.dOb = dOb;
+        this.consentToProvideFamilyMemberDetails = consentToProvideFamilyMemberDetails;
+    }
+
+    public Customer(String name, String password, LocalDate dOb, boolean consentToProvideFamilyMemberDetails, int creditScore, int amountSpentLastMonth, boolean canadian, TrueCustomerCredentials trueCustomerCredentials, DebitCard debitCard) {
+        this(name, password, dOb, consentToProvideFamilyMemberDetails);
         this.creditScore = creditScore;
         this.amountSpentLastMonth = amountSpentLastMonth;
-        this.consentToProvideFamilyMemberDetails = consentToProvideFamilyMemberDetails;
-        this.familyMembers = new HashSet<>();
+        this.canadian = canadian;
+        this.trueCustomerCredentials = trueCustomerCredentials;
+        this.debitCard = debitCard;
+    }
+
+    public TrueCustomerCredentials getTrueCustomerCredentials() {
+        return trueCustomerCredentials;
+    }
+
+    public void setTrueCustomerCredentials(TrueCustomerCredentials trueCustomerCredentials) {
+        this.trueCustomerCredentials = trueCustomerCredentials;
     }
 
     public String getName() {
@@ -27,6 +44,14 @@ public class Customer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public LocalDate getdOb() {
@@ -73,7 +98,11 @@ public class Customer {
         return familyMembers;
     }
 
-    public void setFamilyMembers(Set<FamilyMember> familyMembers) {
-        this.familyMembers = familyMembers;
+    public DebitCard getDebitCard() {
+        return debitCard;
+    }
+
+    public void setDebitCard(DebitCard debitCard) {
+        this.debitCard = debitCard;
     }
 }
