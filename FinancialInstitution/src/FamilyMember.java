@@ -4,12 +4,12 @@ import java.util.Objects;
 public class FamilyMember {
     private String name;
     private LocalDate dOb;
-    private boolean customerOfBank;
+    private String relationship;
 
-    public FamilyMember(String name, LocalDate dOb) {
+    public FamilyMember(String name, LocalDate dOb, String relationship) {
         this.name = name;
         this.dOb = dOb;
-        this.customerOfBank = false;
+        this.relationship = relationship;
     }
 
     @Override
@@ -17,13 +17,22 @@ public class FamilyMember {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FamilyMember that = (FamilyMember) o;
-        return customerOfBank == that.customerOfBank &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(dOb, that.dOb);
+        return Objects.equals(name, that.name) &&
+                Objects.equals(dOb, that.dOb) &&
+                Objects.equals(relationship, that.relationship);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, dOb, customerOfBank);
+        return Objects.hash(name, dOb, relationship);
+    }
+
+    @Override
+    public String toString() {
+        return "FamilyMember{" +
+                "name='" + name + '\'' +
+                ", dOb=" + dOb +
+                ", relationship='" + relationship + '\'' +
+                '}';
     }
 }
