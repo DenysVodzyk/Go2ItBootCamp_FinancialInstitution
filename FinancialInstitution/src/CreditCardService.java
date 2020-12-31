@@ -6,15 +6,15 @@ public class CreditCardService {
     }
 
     public boolean payWithCreditCard(int itemPrice) throws LimitExceededException {
-        if (itemPrice > creditCard.getCreditCardLimit()) {
+        if (itemPrice > creditCard.getCreditCardBalance()) {
             throw new LimitExceededException("You cannot exceed credit card limit.");
         }
-        creditCard.setCreditCardLimit(creditCard.getCreditCardLimit() - itemPrice);
+        creditCard.setCreditCardBalance(creditCard.getCreditCardBalance() - itemPrice);
         return true;
     }
 
     public void payOffCreditCard(int amountToDeposit) {
-        creditCard.setCreditCardLimit(creditCard.getCreditCardLimit() + amountToDeposit);
+        creditCard.setCreditCardBalance(creditCard.getCreditCardBalance() + amountToDeposit);
     }
 
 }
