@@ -7,12 +7,14 @@ public class Customer {
     private String password;
     private TrueCustomerCredentials trueCustomerCredentials;
     private DebitCard debitCard;
+    private CreditCard creditCard;
     private LocalDate dOb;
     private boolean canadian;
     private int creditScore;
     private int amountSpentLastMonth;
     private boolean consentToProvideFamilyMemberDetails;
     private Set<FamilyMember> familyMembers = new HashSet<>();
+
 
     public Customer(String name, String password, LocalDate dOb, boolean consentToProvideFamilyMemberDetails) {
         this.name = name;
@@ -21,13 +23,14 @@ public class Customer {
         this.consentToProvideFamilyMemberDetails = consentToProvideFamilyMemberDetails;
     }
 
-    public Customer(String name, String password, LocalDate dOb, boolean consentToProvideFamilyMemberDetails, int creditScore, int amountSpentLastMonth, boolean canadian, TrueCustomerCredentials trueCustomerCredentials, DebitCard debitCard) {
+    public Customer(String name, String password, LocalDate dOb, boolean consentToProvideFamilyMemberDetails, int creditScore, int amountSpentLastMonth, boolean canadian, TrueCustomerCredentials trueCustomerCredentials, DebitCard debitCard, CreditCard creditCard) {
         this(name, password, dOb, consentToProvideFamilyMemberDetails);
         this.creditScore = creditScore;
         this.amountSpentLastMonth = amountSpentLastMonth;
         this.canadian = canadian;
         this.trueCustomerCredentials = trueCustomerCredentials;
         this.debitCard = debitCard;
+        this.creditCard = creditCard;
     }
 
     public TrueCustomerCredentials getTrueCustomerCredentials() {
@@ -102,7 +105,23 @@ public class Customer {
         return debitCard;
     }
 
+    public int getDebitCardBalance() {
+        return this.debitCard.getBalanceOnDebitCard();
+    }
+
     public void setDebitCard(DebitCard debitCard) {
         this.debitCard = debitCard;
+    }
+
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
+    }
+
+    public int getCreditCardBalance() {
+        return this.creditCard.getCreditCardBalance();
     }
 }
