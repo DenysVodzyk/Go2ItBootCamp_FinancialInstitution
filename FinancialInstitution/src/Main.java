@@ -16,11 +16,16 @@ public class Main {
         DebitCard debitCard1 = new DebitCard(1000000);
         DebitCard debitCard3 = new DebitCard(10000);
 
+        //Credit card
+
+        CreditCard creditCard1 = new CreditCard(100000);
+        CreditCard creditCard3 = new CreditCard(100000);
+
 
         // Created obj of customer for each of 3 customers
         Customer customer1 = new Customer("John", "1111", LocalDate.of(2000, 1, 10), true);
         Customer customer2 = new Customer("John2", "2222", LocalDate.of(2000, 1, 10), false);
-        Customer customer3 = new Customer("John3", "3333", LocalDate.of(2000, 1, 10), true, 640, 5000, true, customer3_Credentials, debitCard3);
+        Customer customer3 = new Customer("John3", "3333", LocalDate.of(2000, 1, 10), true, 680, 5000, true, customer3_Credentials, debitCard3, creditCard3);
 
 
         // Created 2 objects of family member
@@ -46,22 +51,21 @@ public class Main {
 
 
             //Check DebitCard functionality
-            System.out.println("Customer 3 balance: " + customer3.getDebitCard().getBalanceOnDebitCard());
+            System.out.println("Customer 3 balance: " + customer3.getDebitCardBalance());
             customer1.setDebitCard(debitCard1);
 
             DebitCardService debitCardService = new DebitCardService(debitCard1);
-            System.out.println("Customer 1 balance: " + customer1.getDebitCard().getBalanceOnDebitCard());
+            System.out.println("Customer 1 balance: " + customer1.getDebitCardBalance());
             try {
-                debitCardService.transferToDifferentDebitCard(1000001, customer3.getDebitCard());
+                debitCardService.transferToDifferentDebitCard(100000, customer3.getDebitCard());
             } catch (LimitExceededException e) {
                 e.printStackTrace();
             }
-            System.out.println("After transfer, customer1 balance: " + customer1.getDebitCard().getBalanceOnDebitCard());
-            System.out.println("After transfer, customer3 balance: " + customer3.getDebitCard().getBalanceOnDebitCard());
+            System.out.println("After transfer, customer1 balance: " + customer1.getDebitCardBalance());
+            System.out.println("After transfer, customer3 balance: " + customer3.getDebitCardBalance());
 
-            //check customer eligibility for credit line and promotion
+            //check customer eligibility for promotion
             try {
-                customerService.isCustomerEligibleForCreditLine(customer1);
                 customerService.isCustomerEligibleForPromotion(customer1);
             } catch (AccessDeniedException e) {
                 e.printStackTrace();
@@ -79,6 +83,56 @@ public class Main {
             e.printStackTrace();
         }
         System.out.println(customer2.getFamilyMembers());
+
+
+        //Credit Card functionality check
+        CreditCardService creditCardService1 = new CreditCardService(creditCard1);
+        customer1.setCreditCard(creditCard1);
+
+        System.out.println("Initial cc balance: " + creditCard1.getCreditCardBalance());
+        try {
+            creditCardService1.payWithCreditCard(100);
+            creditCardService1.payOffCreditCard(1);
+            creditCardService1.payWithCreditCard(9999999);
+        } catch (LimitExceededException e) {
+            e.printStackTrace();
+        }
+        System.out.println("cc balance after purchase: " + creditCard1.getCreditCardBalance());
+
+        //Check if mortgage functionality works
+
+        System.out.println("Customer 1 eligibility for mortgage:");
+        try {
+            Mortgage mortgage = new Mortgage(customer1);
+        } catch (AccessDeniedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Customer 3 eligibility for mortgage:");
+        try {
+            Mortgage mortgage = new Mortgage(customer3);
+        } catch (AccessDeniedException e) {
+            e.printStackTrace();
+        }
+
+        //Check if credit line functionality works
+
+        System.out.println("Customer 1 eligibility for credit line:");
+        try {
+            CreditLine creditLine1 = new CreditLine(customer1);
+            creditLine1.provideRateInformation();
+        } catch (AccessDeniedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Customer 3 eligibility for credit line:");
+        try {
+            CreditLine creditLine3 = new CreditLine(customer3);
+            creditLine3.provideRateInformation();
+        } catch (AccessDeniedException e) {
+            e.printStackTrace();
+        }
+
 
     }
 }
