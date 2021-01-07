@@ -1,3 +1,5 @@
+import Service.CreditLineService;
+
 public class CreditLine {
     private Customer customer;
     private CreditLineService creditLineService;

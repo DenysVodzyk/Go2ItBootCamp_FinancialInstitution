@@ -1,3 +1,5 @@
+package Entity;
+
 public class TrueCustomerCredentials {
     private String authenticCustomerName;
     private String authenticCustomerPassword;

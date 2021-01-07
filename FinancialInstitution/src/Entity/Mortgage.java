@@ -1,3 +1,5 @@
+import Service.MortgageService;
+
 public class Mortgage {
     private Customer customer;
     private MortgageService mortgageService;
