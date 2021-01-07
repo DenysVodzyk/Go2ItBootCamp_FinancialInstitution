@@ -1,52 +1,43 @@
+package Entity;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-public class Customer {
-    private String name;
+public class Customer extends Person {
     private String password;
-    private TrueCustomerCredentials trueCustomerCredentials;
-    private DebitCard debitCard;
-    private CreditCard creditCard;
-    private LocalDate dOb;
-    private boolean canadian;
+    private CustomerCredentials CustomerCredentials;
+    private Set<FamilyMember> familyMembers = new HashSet<>();
+    private boolean isCanadian;
     private int creditScore;
     private int amountSpentLastMonth;
-    private boolean consentToProvideFamilyMemberDetails;
-    private Set<FamilyMember> familyMembers = new HashSet<>();
+    private boolean isAgreeToShareFamilyInfo;
+    private List<FinancialInstitutionProduct> financialInstitutionProducts = new ArrayList<>();
+//    private DebitCard debitCard;
+//    private CreditCard creditCard;
 
 
-    public Customer(String name, String password, LocalDate dOb, boolean consentToProvideFamilyMemberDetails) {
-        this.name = name;
+    public Customer(String name, LocalDate dOb, String password, boolean isAgreeToShareFamilyInfo) {
+        super(name, dOb);
         this.password = password;
-        this.dOb = dOb;
-        this.consentToProvideFamilyMemberDetails = consentToProvideFamilyMemberDetails;
+        this.isAgreeToShareFamilyInfo = isAgreeToShareFamilyInfo;
     }
 
-    public Customer(String name, String password, LocalDate dOb, boolean consentToProvideFamilyMemberDetails, int creditScore, int amountSpentLastMonth, boolean canadian, TrueCustomerCredentials trueCustomerCredentials, DebitCard debitCard, CreditCard creditCard) {
-        this(name, password, dOb, consentToProvideFamilyMemberDetails);
+    public Customer(String name, LocalDate dOb, String password, boolean isAgreeToShareFamilyInfo, int creditScore, int amountSpentLastMonth, boolean isCanadian) {
+        this(name, dOb, password, isAgreeToShareFamilyInfo);
         this.creditScore = creditScore;
         this.amountSpentLastMonth = amountSpentLastMonth;
-        this.canadian = canadian;
-        this.trueCustomerCredentials = trueCustomerCredentials;
-        this.debitCard = debitCard;
-        this.creditCard = creditCard;
+        this.isCanadian = isCanadian;
     }
 
-    public TrueCustomerCredentials getTrueCustomerCredentials() {
-        return trueCustomerCredentials;
+    public void setCustomerCredentials(CustomerCredentials customerCredentials) {
+        this.CustomerCredentials = customerCredentials;
     }
 
-    public void setTrueCustomerCredentials(TrueCustomerCredentials trueCustomerCredentials) {
-        this.trueCustomerCredentials = trueCustomerCredentials;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public CustomerCredentials getCustomerCredentials() {
+        return CustomerCredentials;
     }
 
     public String getPassword() {
@@ -57,20 +48,12 @@ public class Customer {
         this.password = password;
     }
 
-    public LocalDate getdOb() {
-        return dOb;
-    }
-
-    public void setdOb(LocalDate dOb) {
-        this.dOb = dOb;
-    }
-
     public boolean isCanadian() {
-        return canadian;
+        return isCanadian;
     }
 
     public void setCanadian(boolean canadian) {
-        this.canadian = canadian;
+        this.isCanadian = canadian;
     }
 
     public int getCreditScore() {
@@ -89,19 +72,27 @@ public class Customer {
         this.amountSpentLastMonth = amountSpentLastMonth;
     }
 
-    public boolean isConsentToProvideFamilyMemberDetails() {
-        return consentToProvideFamilyMemberDetails;
+    public boolean isAgreeToShareFamilyInfo() {
+        return isAgreeToShareFamilyInfo;
     }
 
-    public void setConsentToProvideFamilyMemberDetails(boolean consentToProvideFamilyMemberDetails) {
-        this.consentToProvideFamilyMemberDetails = consentToProvideFamilyMemberDetails;
+    public void setAgreeToShareFamilyInfo(boolean agreeToShareFamilyInfo) {
+        this.isAgreeToShareFamilyInfo = agreeToShareFamilyInfo;
     }
 
     public Set<FamilyMember> getFamilyMembers() {
         return familyMembers;
     }
 
-    public DebitCard getDebitCard() {
+    public List<FinancialInstitutionProduct> getFinancialInstitutionProducts() {
+        return financialInstitutionProducts;
+    }
+}
+
+
+
+/*
+*  public DebitCard getDebitCard() {
         return debitCard;
     }
 
@@ -123,5 +114,4 @@ public class Customer {
 
     public int getCreditCardBalance() {
         return this.creditCard.getCreditCardBalance();
-    }
-}
+    }*/
