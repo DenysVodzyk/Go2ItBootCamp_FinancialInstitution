@@ -1,10 +1,10 @@
 package Entity;
 
-public class TrueCustomerCredentials {
+public class CustomerCredentials {
     private String authenticCustomerName;
     private String authenticCustomerPassword;
 
-    public TrueCustomerCredentials(String name, String password) {
+    public CustomerCredentials(String name, String password) {
         this.authenticCustomerName = name;
         this.authenticCustomerPassword = password;
     }
