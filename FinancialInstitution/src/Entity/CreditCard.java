@@ -1,16 +1,28 @@
-public class CreditCard {
-    private int creditCardBalance;
+package Entity;
 
-    public CreditCard(int creditCardLimit){
-        this.creditCardBalance = creditCardLimit;
+public class CreditCard extends FinancialInstitutionProduct {
+    private int creditCardLimit;
+    private int annualFee;
+
+
+    public CreditCard(Customer customer, int balance, int creditCardLimit) {
+        super(customer, balance);
+        this.creditCardLimit = creditCardLimit;
     }
 
-    public int getCreditCardBalance() {
-        return creditCardBalance;
+    public int getCreditCardLimit() {
+        return creditCardLimit;
     }
 
-    public void setCreditCardBalance(int creditCardBalance) {
-        this.creditCardBalance = creditCardBalance;
+    public void setCreditCardLimit(int creditCardLimit) {
+        this.creditCardLimit = creditCardLimit;
+    }
+
+    public int getAnnualFee() {
+        if (getCustomer().isSenior()) {
+            return 0;
+        }
+        return 10000;
     }
 
 }
