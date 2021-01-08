@@ -15,8 +15,7 @@ public class Customer extends Person {
     private int amountSpentLastMonth;
     private boolean isAgreeToShareFamilyInfo;
     private List<FinancialInstitutionProduct> financialInstitutionProducts = new ArrayList<>();
-//    private DebitCard debitCard;
-//    private CreditCard creditCard;
+    private boolean isSenior;
 
 
     public Customer(String name, LocalDate dOb, String password, boolean isAgreeToShareFamilyInfo) {
@@ -87,31 +86,19 @@ public class Customer extends Person {
     public List<FinancialInstitutionProduct> getFinancialInstitutionProducts() {
         return financialInstitutionProducts;
     }
+
+    public boolean isSenior() {
+        return isSenior;
+    }
+
+    public void setSenior(boolean senior) {
+        isSenior = senior;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" + "Name=" + super.getName() + ", " +
+                "isCanadian=" + isCanadian +
+                '}';
+    }
 }
-
-
-
-/*
-*  public DebitCard getDebitCard() {
-        return debitCard;
-    }
-
-    public int getDebitCardBalance() {
-        return this.debitCard.getBalanceOnDebitCard();
-    }
-
-    public void setDebitCard(DebitCard debitCard) {
-        this.debitCard = debitCard;
-    }
-
-    public CreditCard getCreditCard() {
-        return creditCard;
-    }
-
-    public void setCreditCard(CreditCard creditCard) {
-        this.creditCard = creditCard;
-    }
-
-    public int getCreditCardBalance() {
-        return this.creditCard.getCreditCardBalance();
-    }*/
