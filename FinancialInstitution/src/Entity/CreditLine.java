@@ -1,25 +1,21 @@
-import Service.CreditLineService;
+package Entity;
 
-public class CreditLine {
-    private Customer customer;
-    private CreditLineService creditLineService;
+import Service.CreditLineService;
+import Exception.*;
+
+public class CreditLine extends CreditProduct {
     private boolean isEligible;
 
-    public CreditLine(Customer customer) throws AccessDeniedException {
-        this.customer = customer;
-        this.creditLineService = new CreditLineService();
-        this.isEligible = creditLineService.isCustomerEligibleForCreditLine(customer);
+    public CreditLine(Customer customer, int balance, int creditLineLimit) throws AccessDeniedException {
+        super(customer, balance, creditLineLimit);
+        this.isEligible = isCustomerEligibleForCreditLine();
     }
 
-    public void provideRateInformation() throws AccessDeniedException {
-        if (!isEligible) {
-            throw new AccessDeniedException("Access denied.");
+    public boolean isCustomerEligibleForCreditLine() throws AccessDeniedException {
+        if (getCustomer().getCreditScore() < 600) {
+            throw new AccessDeniedException("Customer is not eligible for credit line. His/her credit score is less than 600.");
         }
-        if (customer.isCanadian()) {
-            System.out.println("Your line of credit interest will be 20%");
-        } else {
-            System.out.println("Your line of credit interest will be 22%");
-        }
+        System.out.println("Customer is eligible for credit line!");
+        return true;
     }
-
 }
