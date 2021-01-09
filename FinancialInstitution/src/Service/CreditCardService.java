@@ -14,6 +14,12 @@ public class CreditCardService extends FinancialInstitutionProductService {
         this.creditCard = creditCard;
     }
 
+    public int provideAnnualFee() {
+        if (getCustomer().isSenior()) {
+            return 0;
+        }
+        return 10000;
+    }
 
     public void payOffCreditCard(int amountToDeposit) {
         if (amountToDeposit < 0) {
