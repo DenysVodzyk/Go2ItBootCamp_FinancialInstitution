@@ -1,28 +1,14 @@
 package Entity;
 
-public class CreditCard extends FinancialInstitutionProduct {
-    private int creditCardLimit;
-    private int annualFee;
-
+public class CreditCard extends CreditProduct {
 
     public CreditCard(Customer customer, int balance, int creditCardLimit) {
-        super(customer, balance);
-        this.creditCardLimit = creditCardLimit;
+        super(customer, balance, creditCardLimit);
     }
 
-    public int getCreditCardLimit() {
-        return creditCardLimit;
+    @Override
+    public String toString() {
+        return "CreditCard{" + super.toString() +
+                '}';
     }
-
-    public void setCreditCardLimit(int creditCardLimit) {
-        this.creditCardLimit = creditCardLimit;
-    }
-
-    public int getAnnualFee() {
-        if (getCustomer().isSenior()) {
-            return 0;
-        }
-        return 10000;
-    }
-
 }
