@@ -4,7 +4,7 @@ import Entity.Customer;
 
 public interface Promotionable {
 
-    boolean isEligibleForPromotion(Customer customer);
+    boolean isEligibleForPromotion();
 
-    void applyPromotion(Customer customer);
+    void applyPromotion();
 }
