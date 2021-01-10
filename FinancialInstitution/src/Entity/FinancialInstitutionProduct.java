@@ -1,10 +1,23 @@
 package Entity;
 
-public class FinancialInstitutionProduct {
+import java.util.Objects;
+
+public abstract class FinancialInstitutionProduct {
+    private Customer customer;
     private int balance;
 
-    public FinancialInstitutionProduct(int balance) {
+
+    public FinancialInstitutionProduct(Customer customer, int balance) {
+        this.customer = customer;
         this.balance = balance;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public int getBalance() {
@@ -17,8 +30,9 @@ public class FinancialInstitutionProduct {
 
     @Override
     public String toString() {
-        return "FinancialInstitutionProduct{" +
-                "balance=" + balance +
+        return "FinancialInstitutionProduct{" + "Customer=" + customer.getName() +
+                ", balance=" + balance +
                 '}';
     }
+
 }
