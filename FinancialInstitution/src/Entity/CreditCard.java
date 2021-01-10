@@ -8,7 +8,6 @@ public class CreditCard extends CreditProduct {
 
     @Override
     public String toString() {
-        return "CreditCard{" + super.toString() +
-                '}';
+        return "Credit Card: " + super.toString();
     }
 }
