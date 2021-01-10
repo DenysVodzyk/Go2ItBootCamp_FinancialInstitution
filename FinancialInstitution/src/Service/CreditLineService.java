@@ -1,41 +1,15 @@
 package Service;
 
-import Exception.*;
 import Entity.*;
 
-public class CreditLineService extends FinancialInstitutionProductService {
-    private CreditLine creditLine;
-    private double rate;
+public class CreditLineService extends CreditProductService {
     private static final double CANADIAN_RATE = 20;
     private static final double NON_CANADIAN_RATE = 22;
 
     public CreditLineService(Customer customer, CreditLine creditLine) {
-        super(customer);
-        this.creditLine = creditLine;
+        super(customer, creditLine);
     }
 
-    public double calculateRate() throws AccessDeniedException {
-        if (!creditLine.isCustomerEligibleForCreditLine()) {
-            throw new AccessDeniedException("Access denied.");
-        }
-        if (getCustomer().isCanadian()) {
-            setRate(CANADIAN_RATE);
-            System.out.println("Your line of credit interest will be " + rate + "%");
-            return rate;
-        } else {
-            setRate(NON_CANADIAN_RATE);
-            System.out.println("Your line of credit interest will be " + rate + "%");
-            return rate;
-        }
-    }
-
-    public double getRate() {
-        return rate;
-    }
-
-    public void setRate(double rate) {
-        this.rate = rate;
-    }
 
     @Override
     public boolean isEligibleForPromotion() {
@@ -50,7 +24,17 @@ public class CreditLineService extends FinancialInstitutionProductService {
     @Override
     public void applyPromotion() {
         if (isEligibleForPromotion()) {
-            setRate(rate - 1);
+            setInterestRate(getInterestRate() - 1);
         }
     }
+
+    @Override
+    public void calculateInterestRate() {
+        if (getCustomer().isCanadian()) {
+            setInterestRate(CANADIAN_RATE);
+        } else {
+            setInterestRate(NON_CANADIAN_RATE);
+        }
+    }
+
 }
