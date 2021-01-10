@@ -1,24 +1,36 @@
-import Service.MortgageService;
+package Entity;
 
-public class Mortgage {
-    private Customer customer;
-    private MortgageService mortgageService;
+import Exception.*;
+
+public class Mortgage extends FinancialInstitutionProduct {
     private boolean isEligible;
+    private DebitCard debitCard;
 
-    public Mortgage(Customer customer) throws AccessDeniedException {
-        this.customer = customer;
-        this.mortgageService = new MortgageService();
-        this.isEligible = mortgageService.isCustomerEligibleForMortgage(customer);
+    public Mortgage(Customer customer, int balance, DebitCard debitCard, int mortgageTermLength) throws AccessDeniedException {
+        super(customer, balance);
+        this.debitCard = debitCard;
+        this.isEligible = isCustomerEligibleForMortgage();
     }
 
-    public void provideRateInformation() throws AccessDeniedException {
-        if (!isEligible) {
-            throw new AccessDeniedException("Access denied.");
+    public boolean isCustomerEligibleForMortgage() throws AccessDeniedException {
+        if (getCustomer().getCreditScore() < 660 || debitCard.getBalance() < 550000) {
+            throw new AccessDeniedException("Customer is not eligible for mortgage.");
         }
-        if (customer.isCanadian()) {
-            System.out.println("Your mortgage interest will be 2%");
-        } else {
-            System.out.println("Your mortgage interest will be 4%");
-        }
+        System.out.println("Customer is eligible for mortgage!");
+        return true;
     }
+
+    public DebitCard getDebitCard() {
+        return debitCard;
+    }
+
+    public boolean isEligible() {
+        return isEligible;
+    }
+
+    @Override
+    public String toString() {
+        return "Mortgage: " + super.toString();
+    }
+
 }
