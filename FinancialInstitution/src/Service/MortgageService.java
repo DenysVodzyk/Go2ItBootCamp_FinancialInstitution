@@ -1,10 +1,47 @@
-public class MortgageService {
+package Service;
 
-    public boolean isCustomerEligibleForMortgage(Customer customer) throws AccessDeniedException {
-        if (customer.getCreditScore() < 660 || customer.getDebitCardBalance() < 550000) {
-            throw new AccessDeniedException("Customer is not eligible for mortgage.");
+import Entity.*;
+
+public class MortgageService extends FinancialInstitutionProductService {
+    private Mortgage mortgage;
+    private double interestRate;
+
+    public MortgageService(Customer customer, Mortgage mortgage) {
+        super(customer);
+        this.mortgage = mortgage;
+    }
+
+    public void payOffMortgage(int amountToPay) {
+        if (mortgage.getDebitCard().getBalance() > amountToPay) {
+            if (mortgage.getBalance() > amountToPay) {
+                mortgage.getDebitCard().setBalance(mortgage.getDebitCard().getBalance() - amountToPay);
+                mortgage.setBalance(mortgage.getBalance() - amountToPay);
+            } else {
+                //in case if mortgage leftover is smaller than the amount customer wants to pay.
+                mortgage.getDebitCard().setBalance(mortgage.getDebitCard().getBalance() - mortgage.getBalance());
+                mortgage.setBalance(0);
+            }
+        } else {
+            System.out.println("Not enough money on the debit card.");
         }
-        System.out.println("Customer is eligible for mortgage!");
-        return true;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public void provideRateInformation() {
+        int customerCreditScore = getCustomer().getCreditScore();
+        boolean isCanadian = getCustomer().isCanadian();
+
+        if (isCanadian && customerCreditScore >= 750) {
+            interestRate = 1.8;
+        } else if (isCanadian) {
+            interestRate = 2.2;
+        } else if (customerCreditScore >= 750) {
+            interestRate = 1.9;
+        } else {
+            interestRate = 2.4;
+        }
     }
 }
