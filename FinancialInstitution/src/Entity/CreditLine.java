@@ -1,6 +1,5 @@
 package Entity;
 
-import Service.CreditLineService;
 import Exception.*;
 
 public class CreditLine extends CreditProduct {
@@ -8,7 +7,7 @@ public class CreditLine extends CreditProduct {
 
     public CreditLine(Customer customer, int balance, int creditLineLimit) throws AccessDeniedException {
         super(customer, balance, creditLineLimit);
-        this.isEligible = isCustomerEligibleForCreditLine();
+        isEligible = isCustomerEligibleForCreditLine();
     }
 
     public boolean isCustomerEligibleForCreditLine() throws AccessDeniedException {
@@ -17,5 +16,14 @@ public class CreditLine extends CreditProduct {
         }
         System.out.println("Customer is eligible for credit line!");
         return true;
+    }
+
+    public boolean isEligible() {
+        return isEligible;
+    }
+
+    @Override
+    public String toString() {
+        return "Credit Line: " + super.toString();
     }
 }
