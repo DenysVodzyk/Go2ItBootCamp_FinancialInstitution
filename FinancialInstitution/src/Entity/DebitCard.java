@@ -1,15 +1,15 @@
-public class DebitCard {
-    private int balanceOnDebitCard;
+package Entity;
 
-    public DebitCard(int balanceOnDebitCard){
-        this.balanceOnDebitCard = balanceOnDebitCard;
+public class DebitCard extends FinancialInstitutionProduct {
+
+    public DebitCard(Customer customer, int balanceOnDebitCard) {
+        super(customer, balanceOnDebitCard);
     }
 
-    public int getBalanceOnDebitCard() {
-        return balanceOnDebitCard;
+    @Override
+    public String toString() {
+        return "Debit Card: " + super.toString();
     }
 
-    public void setBalanceOnDebitCard(int balanceOnDebitCard) {
-        this.balanceOnDebitCard = balanceOnDebitCard;
-    }
+
 }
