@@ -11,7 +11,7 @@ public class MortgageService extends FinancialInstitutionProductService {
         this.mortgage = mortgage;
     }
 
-    public void payOffMortgage(int amountToPay) {
+    public boolean payOffMortgage(int amountToPay) {
         if (mortgage.getDebitCard().getBalance() > amountToPay) {
             if (mortgage.getBalance() > amountToPay) {
                 mortgage.getDebitCard().setBalance(mortgage.getDebitCard().getBalance() - amountToPay);
@@ -21,8 +21,10 @@ public class MortgageService extends FinancialInstitutionProductService {
                 mortgage.getDebitCard().setBalance(mortgage.getDebitCard().getBalance() - mortgage.getBalance());
                 mortgage.setBalance(0);
             }
+            return true;
         } else {
             System.out.println("Not enough money on the debit card.");
+            return false;
         }
     }
 
