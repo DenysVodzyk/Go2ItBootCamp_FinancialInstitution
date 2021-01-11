@@ -1,80 +1,88 @@
+package Service;
+
+import Entity.Customer;
 import Entity.DebitCard;
-import Service.DebitCardService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import Exception.*;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DebitCardServiceTest {
-/*
+class DebitCardServiceTest {
+    Customer customer1;
+    Customer customer2;
+    DebitCard debitCard1;
+    DebitCard debitCard2;
+    DebitCardService debitCardService;
+
+    @BeforeEach
+    void setUp() {
+        customer1 = new Customer("Elon Musk", LocalDate.of(1971, 6, 28), "111", true);
+        customer2 = new Customer("Jeff Bezos", LocalDate.of(1964, 1, 12), "112", true);
+
+        debitCard1 = new DebitCard(customer1, 5000);
+        debitCard2 = new DebitCard(customer2, 0);
+        debitCardService = new DebitCardService(customer1, debitCard1);
+    }
+
 
     @Test
     public void withdrawMoneyFromDebitCardTrueTest() {
-        DebitCard debitCard = new DebitCard(5000);
-        DebitCardService debitCardService = new DebitCardService(debitCard);
-        boolean result = false;
-
         try {
-            result = debitCardService.withdrawMoneyFromDebitCard(100);
-        } catch (LimitExceededException e) {
+            debitCardService.withdrawMoneyFromDebitCard(100);
+            assertEquals(4900, debitCard1.getBalance());
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        assertTrue(result);
     }
 
     @Test
     public void withdrawMoneyFromDebitCardFalseTest() {
-        DebitCard debitCard = new DebitCard(5000);
-        DebitCardService debitCardService = new DebitCardService(debitCard);
-        boolean result = false;
-
         try {
-            result = debitCardService.withdrawMoneyFromDebitCard(5001);
-        } catch (LimitExceededException e) {
+            debitCardService.withdrawMoneyFromDebitCard(5100);
+        } catch (Exception e) {
             e.printStackTrace();
+            assertEquals(e.getClass(), LimitExceededException.class);
         }
-        assertFalse(result);
     }
 
     @Test
-    public void depositMoneyToDebitCardTest() {
-        DebitCard debitCard = new DebitCard(5000);
-        DebitCardService debitCardService = new DebitCardService(debitCard);
+    public void depositMoneyToDebitCardTrueTest() {
         debitCardService.depositMoneyToDebitCard(1000);
-        assertEquals(6000, debitCard.getBalance());
+        assertEquals(6000, debitCard1.getBalance());
+    }
+
+    @Test
+    public void depositMoneyToDebitCardFalseTest() {
+        try {
+            debitCardService.depositMoneyToDebitCard(-1);
+        } catch (Exception e) {
+            e.getMessage();
+            assertEquals(e.getClass(), IllegalArgumentException.class);
+        }
     }
 
     @Test
     public void transferToDifferentDebitCardTrueTest() {
-        DebitCard debitCard1 = new DebitCard(5000);
-        DebitCard debitCardToReceiveTransfer = new DebitCard(0);
-        DebitCardService debitCardService = new DebitCardService(debitCard1);
-
         try {
-            debitCardService.transferToDifferentDebitCard(1000, debitCardToReceiveTransfer);
+            debitCardService.transferToDifferentDebitCard(1000, debitCard2);
+            System.out.println("Debit Card #1 balance after transfer: " + debitCard1.getBalance());
+            assertEquals(1000, debitCard2.getBalance());
         } catch (LimitExceededException e) {
             e.printStackTrace();
         }
-        System.out.println("DebitCard1 balance after transfer: " + debitCard1.getBalance());
-        assertEquals(1000, debitCardToReceiveTransfer.getBalance());
     }
 
     @Test
     public void transferToDifferentDebitCardFalseTest() {
-        String actualMessage = "Not enough money on the card.";
-        String exceptionMessage = "";
-        DebitCard debitCard1 = new DebitCard(5000);
-        DebitCard debitCardToReceiveTransfer = new DebitCard(0);
-        DebitCardService debitCardService = new DebitCardService(debitCard1);
-
         try {
-            debitCardService.transferToDifferentDebitCard(5100, debitCardToReceiveTransfer);
-        } catch (LimitExceededException e) {
+            debitCardService.transferToDifferentDebitCard(6000, debitCard2);
+        } catch (Exception e) {
             e.printStackTrace();
-            exceptionMessage = e.getMessage();
+            assertEquals(e.getClass(), LimitExceededException.class);
         }
-        assertTrue(exceptionMessage.equals(actualMessage));
     }
-*/
 
 }
