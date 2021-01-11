@@ -20,7 +20,12 @@ public class DebitCardService extends FinancialInstitutionProductService {
     }
 
     public void depositMoneyToDebitCard(int amountToDeposit) {
-        debitCard.setBalance(debitCard.getBalance() + amountToDeposit);
+        if (amountToDeposit >= 0) {
+            debitCard.setBalance(debitCard.getBalance() + amountToDeposit);
+        } else {
+            throw new IllegalArgumentException("Cannot deposit negative amount");
+        }
+
     }
 
     public boolean transferToDifferentDebitCard(int amountToTransfer, DebitCard debitCardToReceive) throws LimitExceededException {
