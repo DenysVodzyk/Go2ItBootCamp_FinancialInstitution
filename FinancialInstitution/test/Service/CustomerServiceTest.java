@@ -1,7 +1,7 @@
-import Entity.Customer;
-import Entity.FamilyMember;
-import Entity.CustomerCredentials;
-import Service.CustomerService;
+package Service;
+
+import Entity.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import Exception.*;
 
@@ -9,97 +9,81 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CustomerServiceTest {
+class CustomerServiceTest {
 
-   /* @Test
-    public void addFamilyMemberTrueTest() {
-        Customer customer = new Customer("Nick", "1111", LocalDate.of(2020, 1, 1), true);
-        FamilyMember familyMember1 = new FamilyMember("Mike", LocalDate.of(1970, 5, 1), "Father");
-        CustomerService customerService = new CustomerService();
+    Customer customer;
 
-        try {
-            customerService.addFamilyMember(customer, familyMember1);
-        } catch (AccessDeniedException e) {
-            e.printStackTrace();
-        }
-        assertEquals(1, customer.getFamilyMembers().size());
+    @BeforeEach
+    void setUp() {
+        customer = new Customer("Elon Musk", LocalDate.of(1971, 6, 28), "111", true);
     }
 
     @Test
-    public void addFamilyMemberFalseTest() {
-        Customer customer = new Customer("Nick", "1111", LocalDate.of(2020, 1, 1), false);
-        FamilyMember familyMember1 = new FamilyMember("Mike", LocalDate.of(1970, 5, 1), "Father");
-        CustomerService customerService = new CustomerService();
-
-        try {
-            customerService.addFamilyMember(customer, familyMember1);
-        } catch (AccessDeniedException e) {
-            e.printStackTrace();
-        }
-        assertEquals(0, customer.getFamilyMembers().size());
-    }
-
-    @Test
-    public void isCustomerCredentialValidTrueTest() {
-        Customer customer = new Customer("Nick", "1111", LocalDate.of(2020, 1, 1), false);
-        CustomerCredentials trueCustomerCredentials = new CustomerCredentials("Nick", "1111");
+    void isCustomerCredentialValidTrueTest() {
+        CustomerCredentials trueCustomerCredentials = new CustomerCredentials("Elon Musk", "111");
         customer.setCustomerCredentials(trueCustomerCredentials);
-        boolean result = false;
-        CustomerService customerService = new CustomerService();
         try {
-            result = customerService.isCustomerCredentialValid(customer);
+            assertTrue(CustomerService.isCustomerCredentialValid(customer));
         } catch (AccessDeniedException e) {
             e.printStackTrace();
         }
-        assertTrue(result);
     }
 
     @Test
-    public void isCustomerCredentialValidFalseTest() {
-        String actualMessage = "Access denied. Invalid Username or Password";
-        String exceptionMessage = "";
-        Customer customer = new Customer("Nick", "1111", LocalDate.of(2020, 1, 1), false);
-        CustomerCredentials trueCustomerCredentials = new CustomerCredentials("Nick", "222");
+    void isCustomerCredentialValidFalseNameTest() {
+        CustomerCredentials trueCustomerCredentials = new CustomerCredentials("Elon Muks", "111");
         customer.setCustomerCredentials(trueCustomerCredentials);
-        boolean result = false;
-        CustomerService customerService = new CustomerService();
         try {
-            result = customerService.isCustomerCredentialValid(customer);
-        } catch (AccessDeniedException e) {
+            CustomerService.isCustomerCredentialValid(customer);
+        } catch (Exception e) {
             e.printStackTrace();
-            exceptionMessage = e.getMessage();
+            assertEquals(e.getClass(), AccessDeniedException.class);
         }
-        assertTrue(exceptionMessage.equals(actualMessage));
-    }
-
-
-    @Test
-    public void isCustomerEligibleForPromotionTrueTest() {
-        Customer customer = new Customer("Nick", "1111", LocalDate.of(2020, 1, 1), false);
-        customer.setAmountSpentLastMonth(500000);
-        boolean result = false;
-        CustomerService customerService = new CustomerService();
-        try {
-            result = customerService.isCustomerEligibleForPromotion(customer);
-        } catch (AccessDeniedException e) {
-            e.printStackTrace();
-        }
-        assertTrue(result);
     }
 
     @Test
-    public void isCustomerEligibleForPromotionFalseTest() {
-        Customer customer = new Customer("Nick", "1111", LocalDate.of(2020, 1, 1), false);
-        customer.setAmountSpentLastMonth(4);
-        boolean result = false;
-        CustomerService customerService = new CustomerService();
+    void isCustomerCredentialValidFalsePasswordTest() {
+        CustomerCredentials trueCustomerCredentials = new CustomerCredentials("Elon Musk", "1111");
+        customer.setCustomerCredentials(trueCustomerCredentials);
         try {
-            result = customerService.isCustomerEligibleForPromotion(customer);
+            CustomerService.isCustomerCredentialValid(customer);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertEquals(e.getClass(), AccessDeniedException.class);
+        }
+    }
+
+    @Test
+    void addFamilyMemberTrueTest() {
+        FamilyMember familyMember = new FamilyMember("Kimbal Musk", LocalDate.of(1972, 9, 20), "Brother");
+        try {
+            CustomerService.addFamilyMember(customer, familyMember);
+            assertEquals(1, customer.getFamilyMembers().size());
         } catch (AccessDeniedException e) {
             e.printStackTrace();
         }
-        assertFalse(result);
-    }*/
+    }
+
+    @Test
+    void addFamilyMemberFalseTest() {
+        customer.setAgreeToShareFamilyInfo(false);
+        FamilyMember familyMember = new FamilyMember("Kimbal Musk", LocalDate.of(1972, 9, 20), "Brother");
+        try {
+            CustomerService.addFamilyMember(customer, familyMember);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertEquals(e.getClass(), AccessDeniedException.class);
+        }
+    }
+
+    @Test
+    void addFinancialProductTest() {
+        CreditCard creditCard = new CreditCard(customer, 1000, 1000);
+        CustomerService.addFinancialProduct(customer, creditCard);
+        assertEquals(1, customer.getFinancialInstitutionProducts().size());
+    }
 }
+
+
 
 
