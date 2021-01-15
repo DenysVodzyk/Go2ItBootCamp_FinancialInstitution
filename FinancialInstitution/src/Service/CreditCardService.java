@@ -1,25 +1,21 @@
 package Service;
 
-import Entity.CreditCard;
+import Entity.CreditProduct;
 import Entity.Customer;
 
 
 public class CreditCardService extends CreditProductService {
 
-    public CreditCardService(Customer customer, CreditCard creditCard) {
-        super(customer, creditCard);
-    }
-
-    public int provideAnnualFee() {
-        if (getCustomer().isSenior()) {
+    public int provideAnnualFee(Customer customer) {
+        if (customer.isSenior()) {
             return 0;
         }
         return 10000;
     }
 
     @Override
-    public boolean isEligibleForPromotion() {
-        if (getCustomer().getAmountSpentLastMonth() >= 500000) {
+    public boolean isEligibleForPromotion(Customer customer) {
+        if (customer.getAmountSpentLastMonth() >= 500000) {
             System.out.println("Customer is eligible to receive $50 bonus, since he spent $5000 last month.");
             return true;
         }
@@ -28,25 +24,25 @@ public class CreditCardService extends CreditProductService {
     }
 
     @Override
-    public void applyPromotion() {
-        if (isEligibleForPromotion()) {
-            getCreditProduct().setBalance(getCreditProduct().getBalance() + 5000);
+    public void applyPromotion(Customer customer, CreditProduct creditProduct) {
+        if (isEligibleForPromotion(customer)) {
+            creditProduct.setBalance(creditProduct.getBalance() + 5000);
         }
     }
 
     @Override
-    public void calculateInterestRate() {
-        int customerCreditScore = getCustomer().getCreditScore();
-        boolean isCanadian = getCustomer().isCanadian();
+    public void calculateInterestRate(Customer customer, CreditProduct creditProduct) {
+        int customerCreditScore = customer.getCreditScore();
+        boolean isCanadian = customer.isCanadian();
 
         if (isCanadian && customerCreditScore >= 750) {
-            setInterestRate(20);
+            creditProduct.setInterestRate(20);
         } else if (isCanadian) {
-            setInterestRate(22);
+            creditProduct.setInterestRate(22);
         } else if (customerCreditScore >= 750) {
-            setInterestRate(21);
+            creditProduct.setInterestRate(21);
         } else {
-            setInterestRate(23);
+            creditProduct.setInterestRate(23);
         }
     }
 
