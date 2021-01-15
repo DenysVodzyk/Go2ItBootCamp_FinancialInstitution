@@ -14,7 +14,7 @@ public class Customer extends Person {
     private int creditScore;
     private int amountSpentLastMonth;
     private boolean isAgreeToShareFamilyInfo;
-    private List<FinancialInstitutionProduct> financialInstitutionProducts = new ArrayList<>();
+    private List<Product> financialInstitutionProducts = new ArrayList<>();
     private boolean isSenior;
 
 
@@ -83,7 +83,7 @@ public class Customer extends Person {
         return familyMembers;
     }
 
-    public List<FinancialInstitutionProduct> getFinancialInstitutionProducts() {
+    public List<Product> getFinancialInstitutionProducts() {
         return financialInstitutionProducts;
     }
 
