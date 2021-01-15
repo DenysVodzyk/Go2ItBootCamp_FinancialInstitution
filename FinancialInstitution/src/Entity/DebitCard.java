@@ -1,6 +1,6 @@
 package Entity;
 
-public class DebitCard extends FinancialInstitutionProduct {
+public class DebitCard extends Product {
 
     public DebitCard(Customer customer, int balanceOnDebitCard) {
         super(customer, balanceOnDebitCard);
@@ -10,6 +10,5 @@ public class DebitCard extends FinancialInstitutionProduct {
     public String toString() {
         return "Debit Card: " + super.toString();
     }
-
-
+    
 }
