@@ -2,12 +2,12 @@ package Entity;
 
 import java.util.Objects;
 
-public abstract class FinancialInstitutionProduct {
+public abstract class Product {
     private Customer customer;
     private int balance;
 
 
-    public FinancialInstitutionProduct(Customer customer, int balance) {
+    public Product(Customer customer, int balance) {
         this.customer = customer;
         this.balance = balance;
     }
