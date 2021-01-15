@@ -21,7 +21,7 @@ class CreditLineServiceTest {
         customer.setCreditScore(800);
         try {
             creditLine = new CreditLine(customer, 10000, 10000);
-            creditLineService = new CreditLineService(customer, creditLine);
+            creditLineService = new CreditLineService();
         } catch (AccessDeniedException e) {
             e.printStackTrace();
         }
@@ -31,7 +31,7 @@ class CreditLineServiceTest {
     @Test
     void payWithCreditProductHighItemPriceTest() {
         try {
-            creditLineService.payWithCreditProduct(20000);
+            creditLineService.payWithCreditProduct(creditLine, 20000);
         } catch (Exception e) {
             assertEquals(e.getClass(), LimitExceededException.class);
         }
@@ -41,7 +41,7 @@ class CreditLineServiceTest {
     @Test
     void payWithCreditProductLowItemPriceTest() {
         try {
-            creditLineService.payWithCreditProduct(1000);
+            creditLineService.payWithCreditProduct(creditLine, 1000);
         } catch (LimitExceededException e) {
             e.printStackTrace();
         }
@@ -51,7 +51,7 @@ class CreditLineServiceTest {
     @Test
     void payOffCreditProductNegativeAmountTest() {
         try {
-            creditLineService.payOffCreditProduct(-10);
+            creditLineService.payOffCreditProduct(creditLine, -10);
         } catch (Exception e) {
             assertEquals("Amount to deposit cannot be negative.", e.getMessage());
         }
@@ -59,50 +59,50 @@ class CreditLineServiceTest {
 
     @Test
     void payOffCreditProductPositiveAmountTest() {
-        creditLineService.payOffCreditProduct(10);
+        creditLineService.payOffCreditProduct(creditLine, 10);
         assertEquals(10010, creditLine.getBalance());
     }
 
     @Test
     void isEligibleForPromotionTrueTest() {
         customer.setAmountSpentLastMonth(600000);
-        assertTrue(creditLineService.isEligibleForPromotion());
+        assertTrue(creditLineService.isEligibleForPromotion(customer));
     }
 
     @Test
     void isEligibleForPromotionFalseTest() {
         customer.setAmountSpentLastMonth(490000);
-        assertFalse(creditLineService.isEligibleForPromotion());
+        assertFalse(creditLineService.isEligibleForPromotion(customer));
     }
 
     @Test
     void applyPromotionTrue() {
         customer.setAmountSpentLastMonth(600000);
-        creditLineService.setInterestRate(20);
-        creditLineService.applyPromotion();
-        assertEquals(19, creditLineService.getInterestRate());
+        creditLine.setInterestRate(20);
+        creditLineService.applyPromotion(customer, creditLine);
+        assertEquals(19, creditLine.getInterestRate());
     }
 
     @Test
     void applyPromotionFalse() {
         customer.setAmountSpentLastMonth(10000);
-        creditLineService.setInterestRate(22);
-        creditLineService.applyPromotion();
-        assertEquals(22, creditLineService.getInterestRate());
+        creditLine.setInterestRate(22);
+        creditLineService.applyPromotion(customer, creditLine);
+        assertEquals(22, creditLine.getInterestRate());
     }
 
     @Test
     void calculateInterestRateCanadianRateTest() {
         customer.setCanadian(true);
-        creditLineService.calculateInterestRate();
-        assertEquals(20, creditLineService.getInterestRate());
+        creditLineService.calculateInterestRate(customer, creditLine);
+        assertEquals(20, creditLine.getInterestRate());
     }
 
     @Test
     void calculateInterestRateNonCanadianRateTest() {
         customer.setCanadian(false);
-        creditLineService.calculateInterestRate();
-        assertEquals(22, creditLineService.getInterestRate());
+        creditLineService.calculateInterestRate(customer, creditLine);
+        assertEquals(22, creditLine.getInterestRate());
     }
 }
 
