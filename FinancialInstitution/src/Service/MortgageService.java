@@ -3,15 +3,8 @@ package Service;
 import Entity.*;
 
 public class MortgageService extends FinancialInstitutionProductService {
-    private Mortgage mortgage;
-    private double interestRate;
 
-    public MortgageService(Customer customer, Mortgage mortgage) {
-        super(customer);
-        this.mortgage = mortgage;
-    }
-
-    public boolean payOffMortgage(int amountToPay) {
+    public boolean payOffMortgage(Mortgage mortgage, int amountToPay) {
         if (mortgage.getDebitCard().getBalance() > amountToPay) {
             if (mortgage.getBalance() > amountToPay) {
                 mortgage.getDebitCard().setBalance(mortgage.getDebitCard().getBalance() - amountToPay);
@@ -28,22 +21,18 @@ public class MortgageService extends FinancialInstitutionProductService {
         }
     }
 
-    public double getInterestRate() {
-        return interestRate;
-    }
-
-    public void provideRateInformation() {
-        int customerCreditScore = getCustomer().getCreditScore();
-        boolean isCanadian = getCustomer().isCanadian();
+    public void provideRateInformation(Customer customer, Mortgage mortgage) {
+        int customerCreditScore = customer.getCreditScore();
+        boolean isCanadian = customer.isCanadian();
 
         if (isCanadian && customerCreditScore >= 750) {
-            interestRate = 1.8;
+            mortgage.setInterestRate(1.8);
         } else if (isCanadian) {
-            interestRate = 2.2;
+            mortgage.setInterestRate(2.2);
         } else if (customerCreditScore >= 750) {
-            interestRate = 1.9;
+            mortgage.setInterestRate(1.9);
         } else {
-            interestRate = 2.4;
+            mortgage.setInterestRate(2.4);
         }
     }
 }
