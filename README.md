@@ -10,7 +10,7 @@ You are asked to develop a system for a bank. Requirements:
 account, investment account, retirement account etc.);
 - System stores information about the customer family members who are not customers
 of our bank (if he/she provides us with this data);
-- All the business logic should be moved to separate classes. I.e., logic for CreditCard
+- All the business logic should be moved to separate classes, i.e., logic for Entity.CreditCard
 should be stored in CreditCardService, etc.
 - Methods in Service classes must be covered with unit-tests. All the possible scenarios 
 for each method must be covered in separate tests, as opposed to having
