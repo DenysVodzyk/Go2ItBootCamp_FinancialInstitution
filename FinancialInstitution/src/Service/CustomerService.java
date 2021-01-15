@@ -18,7 +18,7 @@ public class CustomerService {
         return true;
     }
 
-    public static void addFinancialProduct(Customer customer, FinancialInstitutionProduct financialInstitutionProduct){
+    public static void addFinancialProduct(Customer customer, Product financialInstitutionProduct){
         customer.getFinancialInstitutionProducts().add(financialInstitutionProduct);
     }
 
@@ -28,7 +28,5 @@ public class CustomerService {
         }
         customer.getFamilyMembers().add(familyMember);
     }
-
-
-
+    
 }
