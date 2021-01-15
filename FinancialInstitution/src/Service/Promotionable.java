@@ -1,10 +1,11 @@
 package Service;
 
+import Entity.CreditProduct;
 import Entity.Customer;
 
 public interface Promotionable {
 
-    boolean isEligibleForPromotion();
+    boolean isEligibleForPromotion(Customer customer);
 
-    void applyPromotion();
+    void applyPromotion(Customer customer, CreditProduct creditProduct);
 }
