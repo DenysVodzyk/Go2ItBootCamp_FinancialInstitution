@@ -2,9 +2,10 @@ package Entity;
 
 import Exception.*;
 
-public class Mortgage extends FinancialInstitutionProduct {
+public class Mortgage extends Product {
     private boolean isEligible;
     private DebitCard debitCard;
+    private double interestRate;
 
     public Mortgage(Customer customer, int balance, DebitCard debitCard, int mortgageTermLength) throws AccessDeniedException {
         super(customer, balance);
@@ -18,6 +19,14 @@ public class Mortgage extends FinancialInstitutionProduct {
         }
         System.out.println("Customer is eligible for mortgage!");
         return true;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
     }
 
     public DebitCard getDebitCard() {
