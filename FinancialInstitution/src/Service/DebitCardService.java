@@ -4,14 +4,8 @@ import Exception.*;
 import Entity.*;
 
 public class DebitCardService extends FinancialInstitutionProductService {
-    private DebitCard debitCard;
 
-    public DebitCardService(Customer customer, DebitCard debitCard) {
-        super(customer);
-        this.debitCard = debitCard;
-    }
-
-    public boolean withdrawMoneyFromDebitCard(int amountToWithdraw) throws LimitExceededException {
+    public boolean withdrawMoneyFromDebitCard(DebitCard debitCard, int amountToWithdraw) throws LimitExceededException {
         if (amountToWithdraw > debitCard.getBalance()) {
             throw new LimitExceededException("Not enough money on the card.");
         }
@@ -19,7 +13,7 @@ public class DebitCardService extends FinancialInstitutionProductService {
         return true;
     }
 
-    public void depositMoneyToDebitCard(int amountToDeposit) {
+    public void depositMoneyToDebitCard(DebitCard debitCard, int amountToDeposit) {
         if (amountToDeposit >= 0) {
             debitCard.setBalance(debitCard.getBalance() + amountToDeposit);
         } else {
@@ -28,8 +22,8 @@ public class DebitCardService extends FinancialInstitutionProductService {
 
     }
 
-    public boolean transferToDifferentDebitCard(int amountToTransfer, DebitCard debitCardToReceive) throws LimitExceededException {
-        if (withdrawMoneyFromDebitCard(amountToTransfer)) {
+    public boolean transferToDifferentDebitCard(DebitCard debitCardToWithdraw, DebitCard debitCardToReceive, int amountToTransfer) throws LimitExceededException {
+        if (withdrawMoneyFromDebitCard(debitCardToWithdraw, amountToTransfer)) {
             debitCardToReceive.setBalance(debitCardToReceive.getBalance() + amountToTransfer);
             return true;
         }
