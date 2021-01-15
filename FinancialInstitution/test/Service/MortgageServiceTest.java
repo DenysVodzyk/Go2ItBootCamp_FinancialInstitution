@@ -28,13 +28,13 @@ class MortgageServiceTest {
         } catch (AccessDeniedException e) {
             e.printStackTrace();
         }
-        mortgageService = new MortgageService(customer, mortgage);
+        mortgageService = new MortgageService();
     }
 
     //amount to pay is < mortgage balance
     @Test
     void payOffMortgageTrueTest() {
-        mortgageService.payOffMortgage(1000);
+        mortgageService.payOffMortgage(mortgage,1000);
         System.out.println("Balance on debit card after payment: " + debitCard.getBalance());
         assertEquals(50000000 - 1000, mortgage.getBalance());
     }
@@ -42,7 +42,7 @@ class MortgageServiceTest {
     //amount to pay is > mortgage balance
     @Test
     void payOffMortgageTrue2Test() {
-        mortgageService.payOffMortgage(60000000);
+        mortgageService.payOffMortgage(mortgage,60000000);
         System.out.println("Balance on debit card after payment: " + debitCard.getBalance());
         assertEquals(0, mortgage.getBalance());
     }
@@ -50,7 +50,7 @@ class MortgageServiceTest {
     @Test
     void payOffMortgageFalseTest() {
         debitCard.setBalance(550000);
-        assertFalse(mortgageService.payOffMortgage(60000000));
+        assertFalse(mortgageService.payOffMortgage(mortgage,60000000));
     }
 
     //interest rate is 1.8%
@@ -58,8 +58,8 @@ class MortgageServiceTest {
     void calculateInterestRate1Test() {
         customer.setCanadian(true);
         customer.setCreditScore(750);
-        mortgageService.provideRateInformation();
-        assertEquals(1.8, mortgageService.getInterestRate());
+        mortgageService.provideRateInformation(customer, mortgage);
+        assertEquals(1.8, mortgage.getInterestRate());
     }
 
     //interest rate is 2.2%
@@ -67,24 +67,24 @@ class MortgageServiceTest {
     void calculateInterestRate2Test() {
         customer.setCanadian(true);
         customer.setCreditScore(300);
-        mortgageService.provideRateInformation();
-        assertEquals(2.2, mortgageService.getInterestRate());
+        mortgageService.provideRateInformation(customer, mortgage);
+        assertEquals(2.2, mortgage.getInterestRate());
     }
 
     //interest rate is 1.9%
     @Test
     void calculateInterestRate3Test() {
         customer.setCreditScore(750);
-        mortgageService.provideRateInformation();
-        assertEquals(1.9, mortgageService.getInterestRate());
+        mortgageService.provideRateInformation(customer, mortgage);
+        assertEquals(1.9, mortgage.getInterestRate());
     }
 
     //interest rate is 2.4%
     @Test
     void calculateInterestRate4Test() {
         customer.setCreditScore(300);
-        mortgageService.provideRateInformation();
-        assertEquals(2.4, mortgageService.getInterestRate());
+        mortgageService.provideRateInformation(customer, mortgage);
+        assertEquals(2.4, mortgage.getInterestRate());
     }
 
 }
