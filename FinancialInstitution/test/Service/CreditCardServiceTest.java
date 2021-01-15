@@ -19,14 +19,14 @@ class CreditCardServiceTest {
     void setUp() {
         customer = new Customer("Elon Musk", LocalDate.of(1971, 6, 28), "111", true);
         creditCard = new CreditCard(customer, 1000, 1000);
-        creditCardService = new CreditCardService(customer, creditCard);
+        creditCardService = new CreditCardService();
     }
 
     //item price > credit card limit
     @Test
     void payWithCreditProductHighItemPriceTest() {
         try {
-            creditCardService.payWithCreditProduct(2000);
+            creditCardService.payWithCreditProduct(creditCard, 2000);
         } catch (Exception e) {
             assertEquals(e.getClass(), LimitExceededException.class);
         }
@@ -36,7 +36,7 @@ class CreditCardServiceTest {
     @Test
     void payWithCreditProductLowItemPriceTest() {
         try {
-            creditCardService.payWithCreditProduct(100);
+            creditCardService.payWithCreditProduct(creditCard, 100);
         } catch (LimitExceededException e) {
             e.printStackTrace();
         }
@@ -46,7 +46,7 @@ class CreditCardServiceTest {
     @Test
     void payOffCreditProductNegativeAmountTest() {
         try {
-            creditCardService.payOffCreditProduct(-10);
+            creditCardService.payOffCreditProduct(creditCard, -10);
         } catch (Exception e) {
             assertEquals("Amount to deposit cannot be negative.", e.getMessage());
         }
@@ -54,44 +54,44 @@ class CreditCardServiceTest {
 
     @Test
     void payOffCreditProductPositiveAmountTest() {
-        creditCardService.payOffCreditProduct(10);
+        creditCardService.payOffCreditProduct(creditCard, 10);
         assertEquals(1010, creditCard.getBalance());
     }
 
     @Test
     void provideAnnualFeeSeniorTest() {
         customer.setSenior(true);
-        assertEquals(0, creditCardService.provideAnnualFee());
+        assertEquals(0, creditCardService.provideAnnualFee(customer));
     }
 
     @Test
     void provideAnnualFeeNotSeniorTest() {
-        assertEquals(10000, creditCardService.provideAnnualFee());
+        assertEquals(10000, creditCardService.provideAnnualFee(customer));
     }
 
     @Test
     void isEligibleForPromotionTrueTest() {
         customer.setAmountSpentLastMonth(500000);
-        assertTrue(creditCardService.isEligibleForPromotion());
+        assertTrue(creditCardService.isEligibleForPromotion(customer));
     }
 
     @Test
     void isEligibleForPromotionFalseTest() {
         customer.setAmountSpentLastMonth(490000);
-        assertFalse(creditCardService.isEligibleForPromotion());
+        assertFalse(creditCardService.isEligibleForPromotion(customer));
     }
 
     @Test
     void applyPromotionTrue() {
         customer.setAmountSpentLastMonth(500000);
-        creditCardService.applyPromotion();
+        creditCardService.applyPromotion(customer, creditCard);
         assertEquals(6000, creditCard.getBalance());
     }
 
     @Test
     void applyPromotionFalse() {
         customer.setAmountSpentLastMonth(1000);
-        creditCardService.applyPromotion();
+        creditCardService.applyPromotion(customer, creditCard);
         assertEquals(1000, creditCard.getBalance());
     }
 
@@ -99,29 +99,29 @@ class CreditCardServiceTest {
     void calculateInterestRate20Test() {
         customer.setCanadian(true);
         customer.setCreditScore(750);
-        creditCardService.calculateInterestRate();
-        assertEquals(20, creditCardService.getInterestRate());
+        creditCardService.calculateInterestRate(customer, creditCard);
+        assertEquals(20, creditCard.getInterestRate());
     }
 
     @Test
     void calculateInterestRate22Test() {
         customer.setCanadian(true);
         customer.setCreditScore(300);
-        creditCardService.calculateInterestRate();
-        assertEquals(22, creditCardService.getInterestRate());
+        creditCardService.calculateInterestRate(customer, creditCard);
+        assertEquals(22, creditCard.getInterestRate());
     }
 
     @Test
     void calculateInterestRate21Test() {
         customer.setCreditScore(750);
-        creditCardService.calculateInterestRate();
-        assertEquals(21, creditCardService.getInterestRate());
+        creditCardService.calculateInterestRate(customer, creditCard);
+        assertEquals(21, creditCard.getInterestRate());
     }
 
     @Test
     void calculateInterestRate23Test() {
-        creditCardService.calculateInterestRate();
-        assertEquals(23, creditCardService.getInterestRate());
+        creditCardService.calculateInterestRate(customer, creditCard);
+        assertEquals(23, creditCard.getInterestRate());
     }
 
 }
