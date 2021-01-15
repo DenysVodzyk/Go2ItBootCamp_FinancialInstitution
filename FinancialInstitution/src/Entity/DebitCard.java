@@ -11,5 +11,5 @@ public class DebitCard extends Product {
         return "Debit Card: " + super.toString();
     }
 
-    
+
 }
