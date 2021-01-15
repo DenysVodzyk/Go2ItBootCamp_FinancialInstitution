@@ -6,14 +6,9 @@ public class CreditLineService extends CreditProductService {
     private static final double CANADIAN_RATE = 20;
     private static final double NON_CANADIAN_RATE = 22;
 
-    public CreditLineService(Customer customer, CreditLine creditLine) {
-        super(customer, creditLine);
-    }
-
-
     @Override
-    public boolean isEligibleForPromotion() {
-        if (getCustomer().getAmountSpentLastMonth() >= 600000) {
+    public boolean isEligibleForPromotion(Customer customer) {
+        if (customer.getAmountSpentLastMonth() >= 600000) {
             System.out.println("Customer is eligible to receive 1% reduction to his line of credit rate.");
             return true;
         }
@@ -22,18 +17,18 @@ public class CreditLineService extends CreditProductService {
     }
 
     @Override
-    public void applyPromotion() {
-        if (isEligibleForPromotion()) {
-            setInterestRate(getInterestRate() - 1);
+    public void applyPromotion(Customer customer, CreditProduct creditProduct) {
+        if (isEligibleForPromotion(customer)) {
+            creditProduct.setInterestRate(creditProduct.getInterestRate() - 1);
         }
     }
 
     @Override
-    public void calculateInterestRate() {
-        if (getCustomer().isCanadian()) {
-            setInterestRate(CANADIAN_RATE);
+    public void calculateInterestRate(Customer customer, CreditProduct creditProduct) {
+        if (customer.isCanadian()) {
+            creditProduct.setInterestRate(CANADIAN_RATE);
         } else {
-            setInterestRate(NON_CANADIAN_RATE);
+            creditProduct.setInterestRate(NON_CANADIAN_RATE);
         }
     }
 
